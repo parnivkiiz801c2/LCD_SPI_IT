@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp
+"axel_angle\startup_stm32f407xx.o"
+"axel_angle\main.o"
+"axel_angle\stm32f4xx_it.o"
+"axel_angle\stm32f4xx_hal_msp.o"
+"axel_angle\stm32f4xx_hal_spi.o"
+"axel_angle\stm32f4xx_hal_rcc.o"
+"axel_angle\stm32f4xx_hal_rcc_ex.o"
+"axel_angle\stm32f4xx_hal_flash.o"
+"axel_angle\stm32f4xx_hal_flash_ex.o"
+"axel_angle\stm32f4xx_hal_flash_ramfunc.o"
+"axel_angle\stm32f4xx_hal_gpio.o"
+"axel_angle\stm32f4xx_hal_dma_ex.o"
+"axel_angle\stm32f4xx_hal_dma.o"
+"axel_angle\stm32f4xx_hal_pwr.o"
+"axel_angle\stm32f4xx_hal_pwr_ex.o"
+"axel_angle\stm32f4xx_hal_cortex.o"
+"axel_angle\stm32f4xx_hal.o"
+"axel_angle\stm32f4xx_hal_exti.o"
+"axel_angle\stm32f4xx_hal_tim.o"
+"axel_angle\stm32f4xx_hal_tim_ex.o"
+"axel_angle\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "Axel_Angle\Axel_Angle.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Axel_Angle.map" -o Axel_Angle\Axel_Angle.axf
