@@ -21,17 +21,23 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
 Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
-C:\Users\STDPLUS\Desktop\Axel_Angle\MDK-ARM\Axel_Angle.uvprojx
-Project File Date:  02/18/2021
+C:\Personal\801c2\LCD_SPI_IT\MDK-ARM\Axel_Angle.uvprojx
+Project File Date:  02/26/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Axel_Angle'
 compiling main.c...
-linking...
-Program Size: Code=8616 RO-data=440 RW-data=36 ZI-data=1116  
-FromELF: creating hex file...
-"Axel_Angle\Axel_Angle.axf" - 0 Error(s), 0 Warning(s).
+../Core/Src/main.c(115): error:  #167: argument of type "uint8_t" is incompatible with parameter of type "uint8_t *"
+  	HAL_SPI_TransmitReceive_IT(&hspi1, TX, RX, Output_Axel);
+../Core/Src/main.c(115): error:  #167: argument of type "uint8_t" is incompatible with parameter of type "uint8_t *"
+  	HAL_SPI_TransmitReceive_IT(&hspi1, TX, RX, Output_Axel);
+../Core/Src/main.c(87): warning:  #177-D: variable "DataX"  was declared but never referenced
+  	char DataX[20] =   {0x00};
+../Core/Src/main.c(88): warning:  #177-D: variable "DataY"  was declared but never referenced
+  	char DataY[20] =   {0x00};
+../Core/Src/main.c: 2 warnings, 2 errors
+"Axel_Angle\Axel_Angle.axf" - 2 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,6 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
+Target not created.
 Build Time Elapsed:  00:00:02
 </pre>
 </body>
