@@ -22,10 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stdlib.h"
-#include "stdio.h"
-#include "stm32f4xx_ll_gpio.h"
-
+#include "SPI_Callback.c"
+#include "TIM_Callback.c"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,10 +55,16 @@ SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim5;
 
 /* USER CODE BEGIN PV */
-volatile int Int_DataX = 0;
-volatile int Int_DataY = 0;
-volatile	uint16_t Out_X, Y_Out = 0x0000;
+int Int_DataX = 0;
+int Int_DataY = 0;
+uint16_t Out_X = 0x0000;
+uint16_t Y_Out = 0x0000;
 volatile float angle_X, Y_angle = 0.0;
+int SPI_State, TIM_State;
+uint16_t	TX=0x8F00;
+uint16_t	RX;
+char DataX[20] =   {0x00};
+char DataY[20] =   {0x00};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,8 +88,6 @@ uint8_t LIS3DSH_Transmit(uint8_t _Addr, uint8_t _Data, uint8_t _Read);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	char DataX[20] =   {0x00};
-	char DataY[20] =   {0x00};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -109,82 +111,16 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
-	uint8_t	TX=0x00;
-	uint8_t	RX=0x00;
-	uint16_t		Output_Axel = 0;
-	HAL_SPI_TransmitReceive_IT(&hspi1, TX, RX, Output_Axel);
-	
-	//uint16_t	TX=0x8F00;
-	//uint16_t	RX=0x0000;
-	//uint8_t		Output_Axel = 0;
-	//0 - zapis'
-	volatile uint8_t DAT = LIS3DSH_Transmit(CTRL_REG4,0x63,Write);
-	if(LIS3DSH_Transmit(CTRL_REG4,0x00,Read) == 0x63)
-	{
-		HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_SET);
-
-	}
-	else
-	{
-		HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_RESET);
-	}
-	
-	//HAL_GPIO_WritePin(GPIOD, gpio_);
-	//INICIALIZACIYA_LCD
-	//STATE_1
-	HAL_Delay(50);
-	volatile uint32_t tmp = LL_GPIO_ReadOutputPort(GPIOD);
-	tmp &= 0xFF00;
-	tmp |= 0x3C;
-	LL_GPIO_WriteOutputPort(GPIOD, tmp);
-	HAL_GPIO_WritePin(RS_GPIO_Port, RS_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
-	HAL_Delay(1);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	//STATE_2-4
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
-	HAL_Delay(1);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	//STATE_5
-	tmp = LL_GPIO_ReadOutputPort(GPIOD);
-	tmp &= 0xFF00;
-	tmp |= 0x0F;
-	LL_GPIO_WriteOutputPort(GPIOD, tmp);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
-	HAL_Delay(1);
-	//STATE_6
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	//STATE_7	
-	tmp = LL_GPIO_ReadOutputPort(GPIOD);
-	tmp &= 0xFF00;
-	tmp |= 0x01;
-	LL_GPIO_WriteOutputPort(GPIOD, tmp);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
-	HAL_Delay(1);	
-	//STATE_8
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	//STATE_9
-	tmp = LL_GPIO_ReadOutputPort(GPIOD);
-	tmp &= 0xFF00;
-	tmp |= 0x06;
-	LL_GPIO_WriteOutputPort(GPIOD, tmp);
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
-	HAL_Delay(1);	
-	//STATE_10
-	HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	//END OF INICIALIZATION LCD
+	TIM_State = 1;
+	HAL_TIM_Base_Start_IT(&htim5);
+//	SPI_State = 1;
+//	HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		HAL_Delay(12);
 		
     /* USER CODE END WHILE */
 
@@ -289,35 +225,16 @@ static void MX_TIM5_Init(void)
 
   /* USER CODE END TIM5_Init 0 */
 
-  TIM_SlaveConfigTypeDef sSlaveConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-
   /* USER CODE BEGIN TIM5_Init 1 */
 
   /* USER CODE END TIM5_Init 1 */
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 0;
+  htim5.Init.Prescaler = 83;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 50000;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
-  {
-    Error_Handler();
-  }
   if (HAL_TIM_OnePulse_Init(&htim5, TIM_OPMODE_SINGLE) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sSlaveConfig.SlaveMode = TIM_SLAVEMODE_TRIGGER;
-  sSlaveConfig.InputTrigger = TIM_TS_ITR0;
-  if (HAL_TIM_SlaveConfigSynchro(&htim5, &sSlaveConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
   {
     Error_Handler();
   }
