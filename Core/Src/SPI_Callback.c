@@ -66,12 +66,24 @@ void HAL_SPI_TxRxCpltCallback (SPI_HandleTypeDef * hspi)
 			}
 			case 5:
 			{
+				memset(DataX,0,20);
 				HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_RESET);
 				Out_X	= Out_X + RX;
 				if ((Out_X & 0x8000) != 0) Int_DataX = (-1 - (0xFFFF - Out_X));
 				else Int_DataX = Out_X;
 				angle_X = Int_DataX / angle_step;
 				sprintf(DataX, "%.2f", angle_X);
+				for(int i = 0; i < 10; i++)
+					{
+						if(DataX[i] == 0x00)
+						{
+							DataX[i] = ':';
+							i++;
+							DataX[i] = 'X';
+							break;
+						}
+		
+					}
 				HAL_TIM_Base_Start_IT(&htim5);
 				break;
 			}
@@ -84,12 +96,24 @@ void HAL_SPI_TxRxCpltCallback (SPI_HandleTypeDef * hspi)
 			}
 			case 7:
 			{
+				memset(DataY,0,20);
 				HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_RESET);
 				Y_Out	= Y_Out + RX;
 				if ((Y_Out & 0x8000) != 0) Int_DataY = (-1 - (0xFFFF - Y_Out));
 				else Int_DataY = Y_Out;
 				Y_angle = Int_DataY / angle_step;
 				sprintf(DataY, "%.2f", Y_angle);
+				for(int i = 0; i < 10; i++)
+					{
+						if(DataY[i] == 0x00)
+						{
+							DataY[i] = ':';
+							i++;
+							DataY[i] = 'Y';
+							break;
+						}
+		
+					}
 				SPI_State = 3;
 				HAL_TIM_Base_Start_IT(&htim5);
 				break;

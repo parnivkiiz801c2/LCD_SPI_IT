@@ -28,6 +28,10 @@ Project File Date:  03/02/2021
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Axel_Angle'
 compiling main.c...
+../Core/Src/SPI_Callback.c(69): warning:  #223-D: function "memset" declared implicitly
+  				memset(DataX,0,20);
+../Core/Src/SPI_Callback.c(99): warning:  #223-D: function "memset" declared implicitly
+  				memset(DataY,0,20);
 ../Core/Src/TIM_Callback.c(5): warning:  #47-D: incompatible redefinition of macro "Out_XL"  (declared at line 6 of "../Core/Src/SPI_Callback.c")
   #define Out_XL				0xA800
 ../Core/Src/TIM_Callback.c(6): warning:  #47-D: incompatible redefinition of macro "Out_XH"  (declared at line 7 of "../Core/Src/SPI_Callback.c")
@@ -44,11 +48,11 @@ compiling main.c...
   #define Out_YL				0x2A
 ../Core/Src/main.c(44): warning:  #47-D: incompatible redefinition of macro "Out_YH"  (declared at line 8 of "../Core/Src/TIM_Callback.c")
   #define Out_YH				0x2B
-../Core/Src/main.c: 8 warnings, 0 errors
+../Core/Src/main.c: 10 warnings, 0 errors
 linking...
-Program Size: Code=11792 RO-data=448 RW-data=52 ZI-data=1220  
+Program Size: Code=11872 RO-data=448 RW-data=52 ZI-data=1220  
 FromELF: creating hex file...
-"Axel_Angle\Axel_Angle.axf" - 0 Error(s), 8 Warning(s).
+"Axel_Angle\Axel_Angle.axf" - 0 Error(s), 10 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -71,7 +75,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
