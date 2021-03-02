@@ -150,9 +150,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>120</LineNumber>
+          <LineNumber>208</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223506</Address>
+          <Address>134225622</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -161,23 +161,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>../Core/Src/TIM_Callback.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Axel_Angle\../Core/Src/TIM_Callback.c\120</Expression>
+          <Expression>\\Axel_Angle\../Core/Src/TIM_Callback.c\208</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>82</LineNumber>
+          <LineNumber>228</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134222338</Address>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Core/Src/SPI_Callback.c</Filename>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>../Core/Src/TIM_Callback.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\\../Core/Src/SPI_Callback.c\82</Expression>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -190,6 +190,21 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>Y_Out</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DataY</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DataX</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>TIM_State</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

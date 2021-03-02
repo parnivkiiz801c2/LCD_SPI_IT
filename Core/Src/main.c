@@ -59,10 +59,10 @@ int Int_DataX = 0;
 int Int_DataY = 0;
 uint16_t Out_X = 0x0000;
 uint16_t Y_Out = 0x0000;
-volatile float angle_X, Y_angle = 0.0;
 int SPI_State, TIM_State;
 uint16_t	TX=0x8F00;
 uint16_t	RX;
+float angle_X, Y_angle = 0.0;
 char DataX[20] =   {0x00};
 char DataY[20] =   {0x00};
 /* USER CODE END PV */

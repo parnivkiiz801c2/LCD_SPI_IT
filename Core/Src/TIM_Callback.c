@@ -13,6 +13,9 @@ extern SPI_HandleTypeDef hspi1;
 extern int SPI_State;
 extern uint16_t	RX;
 extern uint16_t	TX;
+extern char DataX[20];
+extern char DataY[20];
+int i = 0;
 
 void LCD_Set_Data(uint8_t _data, uint8_t _rs);
 
@@ -92,47 +95,139 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)
 				HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
 				TIM_State++;
 				break;
-				//HAL_TIM_Base_Start_IT(&htim5);
 			}	
 			case 10:
 			{
-				//RX = 0x0000;
 				uint16_t TX = Out_XL;
 				SPI_State++;
 				HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
 				TIM_State++;
 				break;
-				//HAL_TIM_Base_Start_IT(&htim5);
 			}
 			case 11:
 			{
-				//RX = 0x0000;
 				uint16_t TX = Out_XH;
 				SPI_State++;
 				HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
 				TIM_State++;
 				break;
-				//HAL_TIM_Base_Start_IT(&htim5);
 			}
 			case 12:
 			{
-				//RX = 0x0000;
 				uint16_t TX = Out_YL;
 				SPI_State++;
 				HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
 				TIM_State++;
 				break;
-				//HAL_TIM_Base_Start_IT(&htim5);
 			}
 			case 13:
 			{
-				//RX = 0x0000;
 				uint16_t TX = Out_YH;
 				SPI_State++;
 				HAL_SPI_TransmitReceive_IT(&hspi1, (uint8_t *)&TX, (uint8_t *)&RX, 1);
 				TIM_State++;
 				break;
-				//HAL_TIM_Base_Start_IT(&htim5);
+			}
+			case 14:
+			{
+				uint32_t tmp = LL_GPIO_ReadOutputPort(GPIOD);
+				tmp &= 0xFF00;
+				tmp |= 0x01;
+				LL_GPIO_WriteOutputPort(GPIOD, tmp);
+				HAL_GPIO_WritePin(RS_GPIO_Port, RS_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
+				i++;
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 15:
+			{
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}			
+			case 16:
+			{
+				
+				if(DataX[i] == 0x00)
+					{
+						i = 0;
+						TIM_State+=2;
+						HAL_TIM_Base_Start_IT(&htim5);
+						break;
+					}
+				uint32_t tmp = LL_GPIO_ReadOutputPort(GPIOD);
+				tmp &= 0xFF00;
+				tmp |= DataX[i];
+				LL_GPIO_WriteOutputPort(GPIOD, tmp);
+				HAL_GPIO_WritePin(RS_GPIO_Port, RS_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
+				i++;
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 17:
+			{
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
+				TIM_State--;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 18:
+			{
+				uint32_t tmp = LL_GPIO_ReadOutputPort(GPIOD);
+				tmp &= 0xFF00;
+				tmp |= 0xC0;
+				LL_GPIO_WriteOutputPort(GPIOD, tmp);
+				HAL_GPIO_WritePin(RS_GPIO_Port, RS_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
+				i++;
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 19:
+			{
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}		
+			case 20:
+			{
+				if(DataY[i] == 0x00) 
+					{
+						i = 0;
+						TIM_State+=2;
+						HAL_TIM_Base_Start_IT(&htim5);
+						break;
+					}
+				uint32_t tmp = LL_GPIO_ReadOutputPort(GPIOD);
+				tmp &= 0xFF00;
+				tmp |= DataY[i];
+				LL_GPIO_WriteOutputPort(GPIOD, tmp);
+				HAL_GPIO_WritePin(RS_GPIO_Port, RS_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_SET);
+				i++;
+				TIM_State++;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 21:
+			{
+				HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, GPIO_PIN_RESET);
+				TIM_State--;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
+			}
+			case 22:
+			{
+				TIM_State = 10;
+				HAL_TIM_Base_Start_IT(&htim5);
+				break;
 			}			
 			default:
 			{
